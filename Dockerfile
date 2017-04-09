@@ -2,39 +2,24 @@ FROM node:boron
 MAINTAINER Andreas Sehr
 
 # Create app directory
-RUN mkdir -p /mnt/sorterat/
-RUN mkdir -p /mnt/cache
-RUN mkdir -p /usr/src/shatabang
+RUN mkdir -p /mnt/data/
+RUN mkdir -p /usr/src/web-app
 WORKDIR /usr/src/shatabang
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-  git \
-  libopencv-dev \
-  libimage-exiftool-perl \
-  libvips-dev \
-  libav-tools
-
-# libav-tools will install avprobe, need to create a symbolic link so it
-# can be use by the node package fluent-ffmpeg.
-RUN ls /usr/bin/av*
-RUN ls /usr/bin/ff*
-RUN ln -s /usr/bin/avprobe /usr/bin/ffprobe
-RUN ln -s /usr/bin/avconv /usr/bin/ffmpeg
 
 #Install source
 # TODO: git checkout
-COPY package.json /usr/src/shatabang
+COPY package.json /usr/src/web-app
 
 # Install app dependencies
 RUN npm install
 
-COPY client /usr/src/shatabang/client
-COPY modules /usr/src/shatabang/modules
-COPY routes /usr/src/shatabang/routes
-COPY task_processors /usr/src/shatabang/task_processors
-COPY *.js /usr/src/shatabang/
-COPY *.sh /usr/src/shatabang/
-COPY install_scripts/docker_config_server.json /usr/src/shatabang/config_server.json
+COPY client /usr/src/web-app/client
+COPY modules /usr/src/web-app/modules
+COPY routes /usr/src/web-app/routes
+COPY *.js /usr/src/web-app/
+COPY install_scripts/docker_config_server.json /usr/src/web-app/config_server.json
+
+RUN npm run build
 
 EXPOSE 3001
-CMD ./start.sh && sh
+CMD npm run start && sh

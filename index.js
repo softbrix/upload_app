@@ -7,12 +7,12 @@ var express        = require("express"),
     app            = express(),
     path           = require('path');
 
-var config = require('./config_server.json'); //JSON.parse(fs.readFileSync('server_config.json', 'utf8'));
+var config = require('./config_server.json');
 
 var PORT = config.port || 3000;
 
-var storageDir = config.storageDir; //'/Volumes/Mini\ Stick/sorted/';
-var cacheDir = config.cacheDir; // '/Volumes/Mini\ Stick/cache/';
+var storageDir = config.storageDir;
+var cacheDir = config.cacheDir;
 var deleteDir = config.deletedDir = path.join(storageDir, 'deleted');
 var uploadDir = config.uploadDir = path.join(storageDir, 'upload');
 var importDir = config.importDir = path.join(storageDir, 'import');

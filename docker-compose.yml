@@ -1,15 +1,9 @@
 web:
-  image: 'softbrix/shatabang'
+  image: 'softbrix/upload_app'
   restart: always
-  hostname: 'h.sehr.se/shatabang/'
   environment:
-   - PORT=3001
+   - PORT=3002
   ports:
-    - '3001:3001'
+    - '3002:3002'
   volumes:
-    - './cache:/mnt/cache'
-    - './data/sorted/:/mnt/sorterat'
-  links:
-    - "redis:redis"
-redis:
-  image: redis
+    - './data:/mnt/data'
