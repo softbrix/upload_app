@@ -50,6 +50,7 @@
     "path": "*",
     "progress": "1.1.8",
     "q": "^1.4.1",
+    "sanitize-filename": "1.6.1",
     "stringset": "^0.2.1",
     "touch": "^1.0.0",
     "underscore": "*"
