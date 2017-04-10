@@ -6,6 +6,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="./assets/main.css" />
 		<link rel="stylesheet" href="./assets/thirdParty.css" />
+		<script>function onloadCallback() {
+				grecaptcha.execute();
+    }
+		function captchaValidated(captchaSignature) {
+		  console.log(captchaSignature);
+			$('#uploadForm *[name=g-recaptcha-response]').val(captchaSignature);
+		}</script>
 
 	</head>
 	<body>
@@ -17,6 +24,10 @@
 				<div class="fallback">
 				    <input name="file" type="file" multiple />
 				</div>
+				<div id='recaptcha' class="g-recaptcha"
+          data-sitekey=""
+          data-callback="captchaValidated"
+          data-size="invisible"></div>
 			</form>
 		</div>
 
@@ -24,5 +35,9 @@
 		<script type="text/javascript" src="./assets/thirdParty.js"></script>
 		<script type="text/javascript" src="./client_config.js"></script>
 		<script type="text/javascript" src="./assets/main.js"></script>
+		<script src='https://www.google.com/recaptcha/api.js' async defer></script>
+		<script>
+
+		</script>
 	</body>
 </html>

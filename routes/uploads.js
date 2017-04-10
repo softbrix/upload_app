@@ -9,11 +9,12 @@ var totalUpload = {
   size: 0,
   files: 0
 };
-var uploadDir, storageDir, importDir;
+var uploadDir, storageDir, importDir, recaptcha;
 router.initialize = function(config) {
   uploadDir = config.uploadDir;
   storageDir = config.storageDir;
   importDir = config.importDir;
+  recaptcha = config.recaptcha;
 };
 var partPrefix = 'part-';
 
@@ -38,20 +39,37 @@ var storage =   multer.diskStorage({
 });
 var uploadSingle = multer({ storage : storage}).single('file');
 var uploadMultiple = multer({ storage : storage}).array('files', 999);
-var imported_cache = [];
 
-router.post('/single',function(req,res) {
+router.post('/single', function(req,res) {
     uploadSingle(req,res, function(err) {
         if(err) {
           console.log(err);
           return res.status(500).end("Error uploading file.");
         }
-        var file = req.file;
-        shFiles.moveFile(file.path, importDir + '/' + file.filename.substr(partPrefix.length));
-        totalUpload.size += file.size;
-        totalUpload.files += 1;
+        var handleUpload = function() {
+          var file = req.file;
+          shFiles.moveFile(file.path, importDir + '/' + file.filename.substr(partPrefix.length));
+          totalUpload.size += file.size;
+          totalUpload.files += 1;
 
-        res.end("File is uploaded");
+          res.end("File is uploaded");
+        };
+
+        var sess = req.session;
+        if (sess.trusted && recaptcha !== undefined) {
+          handleUpload();
+        } else {
+          recaptcha.validateRequest(req)
+            .then(function() {
+              console.log('session validated');
+              sess.trusted = true;
+              handleUpload();
+            })
+            .catch(function(errorCodes) {
+              console.log(recaptcha.translateErrors(errorCodes));
+              res.status(400).end();
+            });
+        }
     });
 });
 
@@ -61,7 +79,6 @@ router.post('/multiple',function(req,res) {
           console.log(err);
             return res.status(500).end("Error uploading files.");
         }
-        //console.log(req.files);
         res.end("Files are uploaded");
     });
 });

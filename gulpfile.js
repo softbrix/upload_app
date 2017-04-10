@@ -9,8 +9,6 @@ gulp.task('js', function () {
   gulp.src([
     'node_modules/jquery/dist/jquery.min.js',
     'node_modules/bootstrap/dist/bootstrap.js',
-    'node_modules/axios/dist/axios.min.js',
-    'node_modules/underscore/underscore-min.js',
     'node_modules/dropzone/dist/min/dropzone.min.js'
     ])
     .pipe(concat('client/assets/thirdParty.js'))
@@ -19,7 +17,6 @@ gulp.task('js', function () {
 
 gulp.task('css', function () {
   gulp.src([
-    'node_modules/font-awesome/css/font-awesome.min.css',
     'node_modules/bootstrap/dist/css/bootstrap-theme.min.css',
     'node_modules/bootstrap/dist/css/bootstrap.min.css',
     'node_modules/dropzone/dist/min/basic.min.css',

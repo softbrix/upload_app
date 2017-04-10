@@ -1,4 +1,6 @@
 {
   "storageDir" : "./data",
-  "cacheDir" : "./data"
+  "cacheDir" : "./data",
+  "captcha_site_key": "YOUR_SITE_KEY",
+  "captcha_secret": "YOUR_SECRET_KEY"
 }
