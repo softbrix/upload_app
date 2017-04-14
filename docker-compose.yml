@@ -3,6 +3,8 @@ web:
   restart: always
   environment:
    - PORT=3002
+   - CAPTCHA_SITE_KEY=
+   - CAPTCHA_SECRET=
   ports:
     - '3002:3002'
   volumes:

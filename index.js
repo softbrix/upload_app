@@ -15,7 +15,9 @@ var config = require('./config_server.json');
 
 var hasForceFlag = argv.f !== undefined;
 
-var PORT = config.port || 3000;
+config.port = process.env.PORT || config.port || 3000;
+config.captcha_site_key = process.env.CAPTCHA_SITE_KEY || config.captcha_site_key;
+config.captcha_secret = process.env.CAPTCHA_SECRET || config.captcha_secret;
 
 var storageDir = config.storageDir;
 var cacheDir = config.cacheDir;
@@ -77,8 +79,8 @@ routes.forEach(function(route) {
 
 app.use('/', express.static(__dirname + "/client/"));
 
-app.listen(PORT, function(){
-  console.log("Working on port " + PORT);
+app.listen(config.port, function(){
+  console.log("Working on port " + config.port);
 });
 
 function hasSiteKey(config) {
