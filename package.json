@@ -16,6 +16,7 @@
     "build": "gulp",
     "test": "vows --spec --isolate",
     "start": "node index.js",
+    "force-start": "node index.js -f",
     "predeploy": "echo im about to deploy",
     "postdeploy": "echo ive deployed",
     "prepublish": "echo soon to be published"

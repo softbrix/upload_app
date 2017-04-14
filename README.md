@@ -9,14 +9,22 @@ I've added a docker image to package the application with all the necessary
 dependencies in one single container.
 The docker image is built with the following command:
 
-`` docker build . -t softbrix/shatabang ``
+`` docker build . -t softbrix/upload_app ``
 
-Please use the provided docker-compose.yml to spin up the instance. This will also
-start the required redis server which will be used by the task processor.
+Please use the provided docker-compose.yml to spin up the instance.
 
 `` docker-compose up -d ``
 
 # Config
 The application needs a config_server.json file with information regarding the
 upload folders.
-The default folder will be data but can be change to anything else.
+The default folder will be ./data/ but can be change to anything else.
+The application also needs a config_client.js file. This can be altered to update
+ the language or the descriptions in the application.
+
+# Recaptcha
+I strongly suggest you to add the necessary configuration for the recaptcha to work.
+Especially if this application is used in an internet facing environment. You need to
+register the domain at: https://www.google.com/recaptcha/admin
+If you start the server without configuring recaptcha, then you need to provide a
+force (-f) flag to the command line.
