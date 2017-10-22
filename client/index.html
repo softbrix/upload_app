@@ -7,7 +7,9 @@
 		<link rel="stylesheet" href="./assets/main.css" />
 		<link rel="stylesheet" href="./assets/thirdParty.css" />
 		<script>function onloadCallback() {
-				grecaptcha.execute();
+				if(window.config.recaptcha_data_sitekey !== 'YOUR_CAPTCHA_KEY') {
+					grecaptcha.execute();
+				}
     }
 		function captchaValidated(captchaSignature) {
 		  console.log(captchaSignature);

@@ -16,8 +16,10 @@ var preventNavigation = function (e) {
 };
 
 function hasRecaptcha() {
+
   var val = $('#uploadForm *[name=g-recaptcha-response').val();
-  return val !== undefined && val.length > 0;
+  return window.config.recaptcha_data_sitekey === 'YOUR_CAPTCHA_KEY' ||
+      val !== undefined && val.length > 0;
 }
 
 Dropzone.options.uploadForm = {

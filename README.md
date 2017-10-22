@@ -11,7 +11,7 @@ The docker image is built with the following command:
 
 `` docker build . -t softbrix/upload_app ``
 
-Please use the provided docker-compose.yml to spin up the instance.
+After a successful build can you use then the provided docker-compose.yml to spin up the instance.
 
 `` docker-compose up -d ``
 

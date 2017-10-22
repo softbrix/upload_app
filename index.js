@@ -11,16 +11,15 @@ var express        = require("express"),
     reCAPTCHA      = require('recaptcha2'),
     path           = require('path');
 
-var config = require('./config_server.json');
+var config = {};
 
-var hasForceFlag = argv.f !== undefined;
-
-config.port = process.env.PORT || config.port || 3000;
-config.captcha_site_key = process.env.CAPTCHA_SITE_KEY || config.captcha_site_key;
-config.captcha_secret = process.env.CAPTCHA_SECRET || config.captcha_secret;
+config.port = process.env.PORT || 3001;
+config.captcha_site_key = process.env.CAPTCHA_SITE_KEY;
+config.captcha_secret = process.env.CAPTCHA_SECRET;
+config.storageDir = process.env.STORAGE_DIR || './data'
+config.sessionSecret = process.env.COOKIE_SECRET;
 
 var storageDir = config.storageDir;
-var cacheDir = config.cacheDir;
 var deleteDir = config.deletedDir = path.join(storageDir, 'deleted');
 var uploadDir = config.uploadDir = path.join(storageDir, 'upload');
 var importDir = config.importDir = path.join(storageDir, 'import');
@@ -31,16 +30,11 @@ if(hasSiteKey(config)) {
     secretKey: config.captcha_secret
   });
 } else {
-  if(hasForceFlag) {
-    console.log('Warning! Recaptcha not configured.');
-  } else {
-    console.log('Error! Recaptcha not configured and server started whitout force (-f) flag.');
-    process.exit(1);
-  }
+  console.log('Warning! Recaptcha not configured.');
 }
 
 // Check that directories exists
-[uploadDir, importDir, deleteDir, path.join(cacheDir, 'info')].forEach(function(directory) {
+[uploadDir, importDir, deleteDir].forEach(function(directory) {
   if(!shFiles.exists(directory)) {
     console.log("Directory dir does not exists. Trying to create it.", directory);
     shFiles.mkdirsSync(directory);
@@ -61,7 +55,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   store: new sessionFsStore({}),
-  secret: config.captcha_secret
+  secret: config.sessionSecret
 }));
 
 app.get('/',function(req,res){
@@ -85,5 +79,5 @@ app.listen(config.port, function(){
 
 function hasSiteKey(config) {
   var k = config.captcha_site_key;
-  return k !== undefined && k.length > 0 && k !== 'YOUR_SITE_KEY';
+  return k !== undefined && k.length > 1 && k !== 'YOUR_SITE_KEY';
 }

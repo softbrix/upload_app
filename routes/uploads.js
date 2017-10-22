@@ -48,7 +48,7 @@ router.post('/single', function(req,res) {
         }
         var handleUpload = function() {
           var file = req.file;
-          shFiles.moveFile(file.path, importDir + '/' + file.filename.substr(partPrefix.length));
+          shFiles.moveFile(file.path, importDir + '/' + file.filename.substr(partPrefix.length+1));
           totalUpload.size += file.size;
           totalUpload.files += 1;
 
@@ -56,7 +56,7 @@ router.post('/single', function(req,res) {
         };
 
         var sess = req.session;
-        if (sess.trusted && recaptcha !== undefined) {
+        if (sess.trusted || recaptcha === undefined) {
           handleUpload();
         } else {
           recaptcha.validateRequest(req)

@@ -1,25 +1,31 @@
 FROM node:boron
 MAINTAINER Andreas Sehr
 
+ENV PORT 3002
+ENV BASE_URL /
+ENV STORAGE_DIR /mnt/data/
+ENV CAPTCHA_SITE_KEY _
+ENV CAPTCHA_SECRET _
+ENV COOKIE_SECRET VeryWellVictorIsSafe
+
 # Create app directory
 RUN mkdir -p /mnt/data/
 RUN mkdir -p /usr/src/web-app
-WORKDIR /usr/src/shatabang
+
+WORKDIR /usr/src/webb-app/
 
 #Install source
-# TODO: git checkout
-COPY package.json /usr/src/web-app
+COPY package.json ./
 
 # Install app dependencies
 RUN npm install
 
-COPY client /usr/src/web-app/client
-COPY modules /usr/src/web-app/modules
-COPY routes /usr/src/web-app/routes
-COPY *.js /usr/src/web-app/
-COPY install_scripts/docker_config_server.json /usr/src/web-app/config_server.json
+COPY client ./client
+COPY modules ./modules
+COPY routes ./routes
+COPY *.js ./
 
 RUN npm run build
 
-EXPOSE 3001
-CMD npm run start && sh
+EXPOSE 3002
+CMD npm run start
